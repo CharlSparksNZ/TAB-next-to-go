@@ -70,7 +70,8 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
                 'react'
               ],
               plugins: [
-                'syntax-dynamic-import'
+                'syntax-dynamic-import',
+                'transform-class-properties'
               ]
             }
           }

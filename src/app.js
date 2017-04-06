@@ -10,16 +10,11 @@ import { Link, Route } from 'react-router-dom'
 // <Helmet> component for setting the page title
 import Helmet from 'react-helmet'
 
+import HomePageContainer from './containers/HomePage'
+
 // Styles
 import css from './styles.css'
 import sass from './styles.scss'
-
-// ----------------------
-
-// We'll display this <Home> component when we're on the / route
-const Home = () => (
-  <h1>You&apos;re on the home page - click another link above</h1>
-)
 
 // Helper component that will be conditionally shown when the route matches.
 // This gives you an idea how React Router v4 works
@@ -96,15 +91,13 @@ export default () => (
         content: 'ReactQL starter kit app'
       }]} />
     <div className={css.hello} />
-    <hr />
     <ul>
       <li><Link to='/'>Home</Link></li>
       <li><Link to='/page/about'>About</Link></li>
       <li><Link to='/page/contact'>Contact</Link></li>
     </ul>
-    <hr />
-    <Route exact path='/' component={Home} />
     <Route path='/page/:name' component={Page} />
+    <Route exact path='/' component={HomePageContainer} />
     <hr />
     <p>Runtime info:</p>
     <Stats />

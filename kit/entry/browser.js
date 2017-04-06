@@ -10,6 +10,7 @@ import 'isomorphic-fetch'
 // React parts
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {Provider} from 'react-redux'
 
 // Browser routing
 import { BrowserRouter } from 'react-router-dom'

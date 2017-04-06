@@ -20,6 +20,9 @@ import React from 'react'
 // React utility to transform JSX to HTML (to send back to the client)
 import ReactDOMServer from 'react-dom/server'
 
+// React redux connection by provider
+import {Provider} from 'react-redux'
+
 // Koa 2 web server.  Handles incoming HTTP requests, and will serve back
 // the React render, or any of the static assets being compiled
 import Koa from 'koa'
@@ -42,7 +45,7 @@ import ejs from 'ejs'
 
 // React Router HOC for figuring out the exact React hierarchy to display
 // based on the URL
-import { StaticRouter, Provider } from 'react-router'
+import { StaticRouter } from 'react-router'
 
 // <Helmet> component for retrieving <head> section, so we can set page
 // title, meta info, etc along with the initial HTML

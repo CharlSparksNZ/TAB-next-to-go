@@ -6,16 +6,16 @@
 // ----------------------
 // IMPORTS
 
-import webpack from 'webpack';
-import WebpackConfig from 'webpack-config';
+import webpack from 'webpack'
+import WebpackConfig from 'webpack-config'
 
-import PATHS from '../../config/paths';
+import PATHS from '../../config/paths'
 
 // ----------------------
 
 // Host and port settings to spawn the dev server on
-const HOST = 'localhost';
-const LOCAL = `http://${HOST}:8080`;
+const HOST = 'localhost'
+const LOCAL = `http://${HOST}:8080`
 
 // CSS loader options.  We want local modules, for all imports to be
 // recognised, and source maps enabled
@@ -24,9 +24,9 @@ const cssLoader = {
   query: {
     modules: true,
     importLoaders: 1,
-    sourceMap: true,
-  },
-};
+    sourceMap: true
+  }
+}
 
 export default new WebpackConfig().extend({
   '[root]/browser.js': conf => {
@@ -35,17 +35,17 @@ export default new WebpackConfig().extend({
     conf.entry.browser.unshift(
       'react-hot-loader/patch',
       `webpack-dev-server/client?${LOCAL}`,
-      'webpack/hot/only-dev-server',
-    );
+      'webpack/hot/only-dev-server'
+    )
 
     // Add React-specific hot loading
     conf.module.loaders.find(l => l.test.toString() === /\.jsx?$/.toString())
       .loaders.unshift({
-        loader: 'react-hot-loader/webpack',
-      });
+        loader: 'react-hot-loader/webpack'
+      })
 
-    return conf;
-  },
+    return conf
+  }
 }).merge({
 
   // Add source maps
@@ -77,8 +77,8 @@ export default new WebpackConfig().extend({
     // We're using React Router for all routes, so redirect 404s
     // back to the webpack-dev-server bootstrap HTML
     historyApiFallback: {
-      index: '/webpack.html',
-    },
+      index: '/webpack.html'
+    }
   },
 
   module: {
@@ -91,9 +91,9 @@ export default new WebpackConfig().extend({
           'style-loader',
           cssLoader,
           {
-            loader: 'postcss-loader',
-          },
-        ],
+            loader: 'postcss-loader'
+          }
+        ]
       },
       // SASS processing.  Same as .css, but parsed through `node-sass` first
       {
@@ -102,17 +102,17 @@ export default new WebpackConfig().extend({
           'style-loader',
           cssLoader,
           'resolve-url-loader',
-          'sass-loader?sourceMap',
-        ],
-      },
-    ],
+          'sass-loader?sourceMap'
+        ]
+      }
+    ]
   },
 
   // Extra output options, specific to the dev server -- source maps and
   // our public path
   output: {
     sourceMapFilename: '[file].map',
-    publicPath: `${LOCAL}/`,
+    publicPath: `${LOCAL}/`
   },
 
   plugins: [
@@ -124,8 +124,8 @@ export default new WebpackConfig().extend({
     // Set NODE_ENV to 'development', in case we need verbose debug logs
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('development'),
-      },
-    }),
-  ],
-});
+        NODE_ENV: JSON.stringify('development')
+      }
+    })
+  ]
+})

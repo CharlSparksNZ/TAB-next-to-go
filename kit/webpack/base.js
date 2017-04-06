@@ -8,29 +8,29 @@
 // IMPORTS
 
 // Webpack 2 is our bundler of choice.
-import webpack from 'webpack';
+import webpack from 'webpack'
 
 // We'll use `webpack-config` to create a 'base' config that can be
 // merged/extended from for further configs
-import WebpackConfig from 'webpack-config';
+import WebpackConfig from 'webpack-config'
 
 // CSSNext is our postcss plugin of choice, that will allow us to use 'future'
 // stylesheet syntax like it's available today.
-import cssnext from 'postcss-cssnext';
+import cssnext from 'postcss-cssnext'
 
 // Allow @import statements in our CSS, and use webpack to resolve those paths
-import postcssPartialImport from 'postcss-partial-import';
+import postcssPartialImport from 'postcss-partial-import'
 
 // Show a nice little progress bar
-import ProgressBarPlugin from 'progress-bar-webpack-plugin';
+import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 
 // Chalk lib, to add some multi-colour awesomeness to our progress messages
-import chalk from 'chalk';
+import chalk from 'chalk'
 
 // Our local path configuration, so webpack knows where everything is/goes.
 // Since we haven't yet established our module resolution paths, we have to
 // use the full relative path
-import PATHS from '../../config/paths';
+import PATHS from '../../config/paths'
 
 // ----------------------
 
@@ -48,8 +48,8 @@ export default new WebpackConfig().merge({
     // doesn't find anything, then it'll check `node_modules` as normal
     modules: [
       PATHS.root,
-      'node_modules',
-    ],
+      'node_modules'
+    ]
   },
 
   // File type config and the loaders that will handle them.  This makes it
@@ -62,8 +62,8 @@ export default new WebpackConfig().merge({
         test: /\.(woff|woff2|ttf|eot)$/i,
         loader: 'file-loader',
         query: {
-          name: 'assets/fonts/[name].[ext]',
-        },
+          name: 'assets/fonts/[name].[ext]'
+        }
       },
 
       // Images.  By default, we'll just use the file loader.  In production,
@@ -80,18 +80,18 @@ export default new WebpackConfig().merge({
               // production, which causes the server hash to mismatch and look
               // for a file that doesn't exist.  Keeping the file name the same
               // is exactly what we want.
-              name: 'assets/img/[name].[ext]',
-            },
-          },
-        ],
+              name: 'assets/img/[name].[ext]'
+            }
+          }
+        ]
       },
 
       // .json files will become objects that we can use in JS, like any other
       {
         test: /\.json$/,
-        loader: 'json-loader',
-      },
-    ],
+        loader: 'json-loader'
+      }
+    ]
   },
 
   // Output settings.  Where our files will wind up, and what we consider
@@ -105,13 +105,13 @@ export default new WebpackConfig().merge({
     publicPath: '/',
 
     // Filenames will simply be <name>.js
-    filename: '[name].js',
+    filename: '[name].js'
   },
 
   plugins: [
     // Progress bar + options
     new ProgressBarPlugin({
-      format: ` ${chalk.magenta.bold('ReactQL')} building [:bar] ${chalk.green.bold(':percent')} (:elapsed seconds)`,
+      format: ` ${chalk.magenta.bold('ReactQL')} building [:bar] ${chalk.green.bold(':percent')} (:elapsed seconds)`
     }),
 
     // Options that our module loaders will pull from
@@ -128,42 +128,42 @@ export default new WebpackConfig().merge({
         context: PATHS.src,
 
         // PostCSS -- @import, cssnext
-        postcss() {
+        postcss () {
           return {
             plugins: [
               // @import powers
               postcssPartialImport({
                 dirs: [
-                  PATHS.src,
-                ],
+                  PATHS.src
+                ]
               }),
               // Use the default CSSNext settings
-              cssnext(),
-            ],
-          };
+              cssnext()
+            ]
+          }
         },
 
         // image-webpack-loader image crunching options
         imageWebpackLoader: {
           mozjpeg: {
-            quality: 65,
+            quality: 65
           },
           pngquant: {
             quality: '65-90',
-            speed: 4,
+            speed: 4
           },
           svgo: {
             plugins: [
               {
-                removeViewBox: false,
+                removeViewBox: false
               },
               {
-                removeEmptyAttrs: false,
-              },
-            ],
-          },
-        },
-      },
-    }),
-  ],
-});
+                removeEmptyAttrs: false
+              }
+            ]
+          }
+        }
+      }
+    })
+  ]
+})

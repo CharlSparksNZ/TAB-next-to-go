@@ -8,19 +8,19 @@
 
 // Node's built-in `path` module.  We'll use this to determine the entry
 // `browser.js` entry point
-import path from 'path';
+import path from 'path'
 
 // Webpack 2 is our bundler of choice.
-import webpack from 'webpack';
+import webpack from 'webpack'
 
 // We'll use `webpack-config` to extend the base config we've already created
-import WebpackConfig from 'webpack-config';
+import WebpackConfig from 'webpack-config'
 
 // other plug-ins
 // import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 // Our local path configuration, so webpack knows where everything is/goes
-import PATHS from '../../config/paths';
+import PATHS from '../../config/paths'
 
 // ----------------------
 
@@ -32,8 +32,8 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
     // Client specific source code.  This is the stuff we write.
     browser: [
       // Entry point for the browser
-      path.join(PATHS.entry, 'browser.js'),
-    ],
+      path.join(PATHS.entry, 'browser.js')
+    ]
   },
 
   // Set-up some common mocks/polyfills for features available in node, so
@@ -42,7 +42,7 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
     console: true,
     fs: 'empty',
     net: 'empty',
-    tls: 'empty',
+    tls: 'empty'
   },
 
   // Modules specific to our browser bundle
@@ -63,20 +63,20 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
                 ['env', {
                   // By default, target only modern browsers
                   targets: {
-                    browsers: 'last 3 versions',
-                  },
+                    browsers: 'last 3 versions'
+                  }
                 }],
                 // Transpile JSX code
-                'react',
+                'react'
               ],
               plugins: [
-                'syntax-dynamic-import',
-              ],
-            },
-          },
-        ],
-      },
-    ],
+                'syntax-dynamic-import'
+              ]
+            }
+          }
+        ]
+      }
+    ]
   },
 
   plugins: [
@@ -87,15 +87,15 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
       minChunks: module => (
          // this assumes your vendor imports exist in the node_modules directory
          module.context && module.context.indexOf('node_modules') !== -1
-      ),
+      )
     }),
 
     // Create a `SERVER` constant that's false in the browser-- we'll use this to
     // determine whether we're running on a Node server and set this to true
     // in the server.js config
     new webpack.DefinePlugin({
-      SERVER: false,
-    }),
+      SERVER: false
+    })
 
     // new CopyWebpackPlugin([
     //   {
@@ -107,5 +107,5 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
     //     '*.html', // Ignore static HTML (which we'll use to bootstrap webpack)
     //   ],
     // }),
-  ],
-});
+  ]
+})

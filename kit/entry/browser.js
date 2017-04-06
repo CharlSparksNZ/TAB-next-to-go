@@ -5,48 +5,36 @@
 // IMPORTS
 
 // Patch global.`fetch` so that Apollo calls to GraphQL work
-import 'isomorphic-fetch';
+import 'isomorphic-fetch'
 
 // React parts
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 // Browser routing
-import { BrowserRouter } from 'react-router-dom';
-
-// Apollo Provider. This HOC will 'wrap' our React component chain
-// and handle injecting data down to any listening component
-import { ApolloProvider } from 'react-apollo';
-
-// Grab the shared Apollo Client
-import { browserClient } from 'kit/lib/apollo';
+import { BrowserRouter } from 'react-router-dom'
 
 // Custom redux store creator.  This will allow us to create a store 'outside'
 // of Apollo, so we can apply our own reducers and make use of the Redux dev
 // tools in the browser
-import createNewStore from 'kit/lib/redux';
+import createNewStore from 'kit/lib/redux'
 
 // Root component.  This is our 'entrypoint' into the app.  If you're using
 // the ReactQL starter kit for the first time, `src/app.js` is where
 // you can start editing to add your own code
-import App from 'src/app';
-
-// ----------------------
-
-// Create a new browser Apollo client
-const client = browserClient();
+import App from 'src/app'
 
 // Create a new Redux store
-const store = createNewStore(client);
+const store = createNewStore()
 
 // Create the 'root' entry point into the app.  If we have React hot loading
 // (i.e. if we're in development), then we'll wrap the whole thing in an
 // <AppContainer>.  Otherwise, we'll jump straight to the browser router
-function doRender() {
+function doRender () {
   ReactDOM.render(
     <Root />,
-    document.getElementById('main'),
-  );
+    document.getElementById('main')
+  )
 }
 
 // The <Root> component.  We'll run this as a self-contained function since
@@ -59,12 +47,12 @@ const Root = (() => {
   // Wrap the component hierarchy in <BrowserRouter>, so that our children
   // can respond to route changes
   const Chain = () => (
-    <ApolloProvider store={store} client={client}>
+    <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </ApolloProvider>
-  );
+    </Provider>
+  )
 
   // React hot reloading -- only enabled in production.  This branch will
   // be shook from production, so we can run a `require` statement here
@@ -72,7 +60,7 @@ const Root = (() => {
   if (module.hot) {
     // <AppContainer> will respond to our Hot Module Reload (HMR) changes
     // back from WebPack, and handle re-rendering the chain as needed
-    const AppContainer = require('react-hot-loader').AppContainer;
+    const AppContainer = require('react-hot-loader').AppContainer
 
     // Start our 'listener' at the root component, so that any changes that
     // occur in the hierarchy can be captured
@@ -83,16 +71,16 @@ const Root = (() => {
       require('src/app').default;
 
       // Re-render the hierarchy
-      doRender();
-    });
+      doRender()
+    })
 
     return () => (
       <AppContainer>
         <Chain />
       </AppContainer>
-    );
+    )
   }
-  return Chain;
-})();
+  return Chain
+})()
 
-doRender();
+doRender()

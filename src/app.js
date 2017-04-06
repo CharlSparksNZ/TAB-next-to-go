@@ -10,9 +10,6 @@ import { Link, Route } from 'react-router-dom'
 // <Helmet> component for setting the page title
 import Helmet from 'react-helmet'
 
-// Helper to merge expected React PropTypes to Apollo-enabled component
-import { mergeData } from 'kit/lib/apollo'
-
 // Styles
 import css from './styles.css'
 import sass from './styles.scss'
@@ -70,13 +67,13 @@ const Message = ({ data }) => {
 
 // Add propTypes for React to expect data from GraphQL
 Message.propTypes = {
-  data: mergeData({
+  data: {
     allMessages: React.PropTypes.arrayOf(
       React.PropTypes.shape({
         text: React.PropTypes.string.isRequired
       }).isRequired
     )
-  })
+  }
 }
 
 // Example of CSS, SASS and LESS styles being used together

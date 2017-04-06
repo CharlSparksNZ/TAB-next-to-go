@@ -12,65 +12,56 @@
 // IMPORTS
 
 // Patch global.`fetch` so that Apollo calls to GraphQL work
-import 'isomorphic-fetch';
+import 'isomorphic-fetch'
 
 // React UI
-import React from 'react';
+import React from 'react'
 
 // React utility to transform JSX to HTML (to send back to the client)
-import ReactDOMServer from 'react-dom/server';
+import ReactDOMServer from 'react-dom/server'
 
 // Koa 2 web server.  Handles incoming HTTP requests, and will serve back
 // the React render, or any of the static assets being compiled
-import Koa from 'koa';
-
-// Apollo tools to connect to a GraphQL server.  We'll grab the
-// `ApolloProvider` HOC component, which will inject any 'listening' React
-// components with GraphQL data props.  We'll also use `getDataFromTree`
-// to await data being ready before rendering back HTML to the client
-import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import Koa from 'koa'
 
 // HTTP header hardening
-import koaHelmet from 'koa-helmet';
+import koaHelmet from 'koa-helmet'
 
 // Koa Router, for handling URL requests
-import KoaRouter from 'koa-router';
+import KoaRouter from 'koa-router'
 
 // Static file handler
-import koaStatic from 'koa-static';
+import koaStatic from 'koa-static'
 
 // High-precision timing, so we can debug response time to serve a request
-import ms from 'microseconds';
+import ms from 'microseconds'
 
 // Embedded Javascript views -- we'll use this to inject React and other
 // data into the HTML that is rendered back to the client
-import ejs from 'ejs';
+import ejs from 'ejs'
 
 // React Router HOC for figuring out the exact React hierarchy to display
 // based on the URL
-import { StaticRouter } from 'react-router';
+import { StaticRouter, Provider } from 'react-router'
 
 // <Helmet> component for retrieving <head> section, so we can set page
 // title, meta info, etc along with the initial HTML
-import Helmet from 'react-helmet';
-
-// Grab the shared Apollo Client
-import { serverClient } from 'kit/lib/apollo';
+import Helmet from 'react-helmet'
 
 // Custom redux store creator.  This will allow us to create a store 'outside'
 // of Apollo, so we can apply our own reducers and make use of the Redux dev
 // tools in the browser
-import createNewStore from 'kit/lib/redux';
+import createNewStore from 'kit/lib/redux'
 
 // Initial view to send back HTML render
-import view from 'kit/views/ssr.ejs';
+import view from 'kit/views/ssr.ejs'
 
 // App entry point
-import App from 'src/app';
+import App from 'src/app'
 
 // Import paths.  We'll use this to figure out where our public folder is
 // so we can serve static files
-import PATHS from 'config/paths';
+import PATHS from 'config/paths'
 
 // ----------------------
 
@@ -79,38 +70,31 @@ import PATHS from 'config/paths';
 const PORT = process.env.PORT || 4000;
 
 // Run the server
-(async function server() {
+(async function server () {
   // Set up routes
   const router = (new KoaRouter())
     // Set-up a general purpose /ping route to check the server is alive
     .get('/ping', async ctx => {
-      ctx.body = 'pong';
+      ctx.body = 'pong'
     })
 
     // Everything else is React
     .get('/*', async ctx => {
-      const route = {};
-
-      // Create a new server Apollo client for this request
-      const client = serverClient();
+      const route = {}
 
       // Create a new Redux store for this request
-      const store = createNewStore(client);
+      const store = createNewStore()
 
       // Generate the HTML from our React tree.  We're wrapping the result
       // in `react-router`'s <StaticRouter> which will pull out URL info and
       // store it in our empty `route` object
       const components = (
         <StaticRouter location={ctx.request.url} context={route}>
-          <ApolloProvider store={store} client={client}>
+          <Provider store={store} >
             <App />
-          </ApolloProvider>
+          </Provider>
         </StaticRouter>
-      );
-
-      // Wait for GraphQL data to be available in our initial render,
-      // before dumping HTML back to the client
-      await getDataFromTree(components);
+      )
 
       // Render the view with our injected React data
       ctx.body = ejs.render(view, {
@@ -123,8 +107,8 @@ const PORT = process.env.PORT || 4000;
         // Redux serialized store, to prevent the browser from making
         // unnecessary round-trips to retrieve the same GraphQL data and
         // for any custom store state
-        state: JSON.stringify(store.getState()),
-      });
+        state: JSON.stringify(store.getState())
+      })
     });
 
   // Start Koa
@@ -137,31 +121,31 @@ const PORT = process.env.PORT || 4000;
     // chain, it will be caught and logged back here
     .use(async (ctx, next) => {
       try {
-        await next();
+        await next()
       } catch (e) {
         // TODO we've used rudimentary console logging here.  In your own
         // app, I'd recommend you implement third-party logging so you can
         // capture errors properly
-        console.log('Error', e.message);
-        ctx.body = 'There was an error. Please try again later.';
+        console.log('Error', e.message)
+        ctx.body = 'There was an error. Please try again later.'
       }
     })
 
     // It's useful to see how long a request takes to respond.  Add the
     // timing to a HTTP Response header
     .use(async (ctx, next) => {
-      const start = ms.now();
-      await next();
-      const end = ms.parse(ms.since(start));
-      const total = end.microseconds + (end.milliseconds * 1e3) + (end.seconds * 1e6);
-      ctx.set('Response-Time', `${total / 1e3}ms`);
+      const start = ms.now()
+      await next()
+      const end = ms.parse(ms.since(start))
+      const total = end.microseconds + (end.milliseconds * 1e3) + (end.seconds * 1e6)
+      ctx.set('Response-Time', `${total / 1e3}ms`)
     })
 
     // Serve static files from our dist/public directory, which is where
     // the compiled JS, images, etc will wind up
     .use(koaStatic(PATHS.public, {
       // Don't defer to middleware.  If we have a file, serve it immediately
-      defer: false,
+      defer: false
     }))
 
     // If the requests makes it here, we'll assume they need to be handled
@@ -170,5 +154,5 @@ const PORT = process.env.PORT || 4000;
     .use(router.allowedMethods())
 
     // Bind to the specified port
-    .listen(PORT);
-}());
+    .listen(PORT)
+}())

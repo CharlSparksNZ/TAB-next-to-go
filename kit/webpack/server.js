@@ -3,16 +3,16 @@
 // ----------------------
 // IMPORTS
 
-import path from 'path';
-import webpack from 'webpack';
-import WebpackConfig from 'webpack-config';
+import path from 'path'
+import webpack from 'webpack'
+import WebpackConfig from 'webpack-config'
 
 // Plugin to allow us to exclude `node_modules` packages from the final
 // bundle.  Since we'll be running `server.js` from Node, we'll have access
 // to those modules locally and they don't need to wind up in the bundle file
-import nodeModules from 'webpack-node-externals';
+import nodeModules from 'webpack-node-externals'
 
-import PATHS from '../../config/paths';
+import PATHS from '../../config/paths'
 
 // ----------------------
 
@@ -20,18 +20,18 @@ import PATHS from '../../config/paths';
 const cssLoader = {
   loader: 'css-loader/locals',
   query: {
-    modules: true,
-  },
-};
+    modules: true
+  }
+}
 
 // Helper function to recursively filter through loaders, and apply the
 // supplied function
-function recursiveLoader(root = {}, func) {
+function recursiveLoader (root = {}, func) {
   if (root.loaders) {
-    root.loaders.forEach(l => recursiveLoader(l, func));
+    root.loaders.forEach(l => recursiveLoader(l, func))
   }
-  if (root.loader) return func(root);
-  return false;
+  if (root.loader) return func(root)
+  return false
 }
 
 export default new WebpackConfig().extend({
@@ -43,11 +43,11 @@ export default new WebpackConfig().extend({
           // eslint-disable-next-line
           l.query.emitFile = false;
         }
-      });
-    });
+      })
+    })
 
-    return conf;
-  },
+    return conf
+  }
 }).merge({
 
   // Set the target to Node.js, since we'll be running the bundle on the server
@@ -56,19 +56,19 @@ export default new WebpackConfig().extend({
   // Output to the `dist` folder
   output: {
     path: PATHS.dist,
-    filename: 'server.js',
+    filename: 'server.js'
   },
 
   entry: {
     javascript: [
       // Server entry point
-      path.join(PATHS.entry, 'server.js'),
-    ],
+      path.join(PATHS.entry, 'server.js')
+    ]
   },
 
   // Make __dirname work properly
   node: {
-    __dirname: true,
+    __dirname: true
   },
 
   module: {
@@ -79,24 +79,24 @@ export default new WebpackConfig().extend({
         test: /\.css$/,
         loaders: [
           cssLoader,
-          'postcss-loader',
-        ],
+          'postcss-loader'
+        ]
       },
       // Do the same with SASS files-- get the classnames, but don't emit
       {
         test: /\.s(c|a)ss$/,
         loaders: [
           cssLoader,
-          'sass-loader',
-        ],
+          'sass-loader'
+        ]
       },
       // Do the same with LESS files-- same with SASS; classnames, but no emission
       {
         test: /\.less$/,
         loaders: [
           cssLoader,
-          'less-loader',
-        ],
+          'less-loader'
+        ]
       },
       // .js(x) files can extend the `.babelrc` file at the root of the project
       // (which was used to spawn Webpack in the first place), because that's
@@ -107,28 +107,28 @@ export default new WebpackConfig().extend({
         loader: 'babel-loader',
         query: {
           presets: [
-            'react',
+            'react'
           ],
           plugins: [
-            'syntax-dynamic-import',
-          ],
-        },
+            'syntax-dynamic-import'
+          ]
+        }
       },
 
       // .ejs views
       {
         test: /\.ejs$/,
-        loader: 'raw-loader',
-      },
-    ],
+        loader: 'raw-loader'
+      }
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
       // We're running on the Node.js server, so set `SERVER` to true
-      SERVER: true,
-    }),
+      SERVER: true
+    })
   ],
   // No need to transpile `node_modules` files, since they'll obviously
   // still be available to Node.js when we run the resulting `server.js` entry
-  externals: nodeModules(),
-});
+  externals: nodeModules()
+})

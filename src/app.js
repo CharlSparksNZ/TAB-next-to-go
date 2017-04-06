@@ -14,7 +14,6 @@ import HomePageContainer from './containers/HomePage'
 
 // Styles
 import css from './styles.css'
-import sass from './styles.scss'
 
 // Helper component that will be conditionally shown when the route matches.
 // This gives you an idea how React Router v4 works
@@ -28,25 +27,6 @@ Page.propTypes = {
   match: React.PropTypes.shape({
     params: React.PropTypes.object
   }).isRequired
-}
-
-// Stats pulled from the environment.  This demonstrates how data will
-// change depending where we're running the code (environment vars, etc)
-// and also how we can connect a 'vanilla' React component to an RxJS
-// observable source, and feed eventual values in as properties
-const Stats = () => {
-  const info = [
-    ['Environment', process.env.NODE_ENV],
-    ['Running', SERVER ? 'On the server' : 'In the browser']
-  ]
-
-  return (
-    <ul className={css.data}>
-      {info.map(([key, val]) => (
-        <li key={key}>{key}: <span>{val}</span></li>
-      ))}
-    </ul>
-  )
 }
 
 const Message = ({ data }) => {
@@ -71,14 +51,6 @@ Message.propTypes = {
   }
 }
 
-// Example of CSS, SASS and LESS styles being used together
-const Styles = () => (
-  <ul className={css.styleExamples}>
-    <li className={css.example}>Styled by CSS</li>
-    <li className={sass.example}>Styled by SASS</li>
-  </ul>
-)
-
 // Export a simple component that allows clicking on list items to change
 // the route, along with a <Route> 'listener' that will conditionally display
 // the <Page> component based on the route name
@@ -98,11 +70,5 @@ export default () => (
     </ul>
     <Route path='/page/:name' component={Page} />
     <Route exact path='/' component={HomePageContainer} />
-    <hr />
-    <p>Runtime info:</p>
-    <Stats />
-    <hr />
-    <p>Stylesheet examples:</p>
-    <Styles />
   </div>
 )

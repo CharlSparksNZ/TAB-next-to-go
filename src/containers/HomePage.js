@@ -30,7 +30,7 @@ function mapDispatchToProps (dispatch) {
 
 function mapStateToProps (state) {
   return {
-    races: state.tabData
+    races: state.tabData.races
   }
 }
 

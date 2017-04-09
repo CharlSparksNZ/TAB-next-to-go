@@ -1,10 +1,29 @@
 import React, {PropTypes, Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import moment from 'moment'
 
 import HomePage from '../components/HomePage'
 
 import {fetchNextToGoRaces} from '../store/data/actions'
+
+moment.updateLocale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s ago',
+    s: '%d seconds',
+    m: 'a minute',
+    mm: '%d minutes',
+    h: 'an hour',
+    hh: '%d hours',
+    d: 'a day',
+    dd: '%d days',
+    M: 'a month',
+    MM: '%d months',
+    y: 'a year',
+    yy: '%d years'
+  }
+})
 
 class HomePageContainer extends Component {
   static propTypes = {
@@ -12,14 +31,50 @@ class HomePageContainer extends Component {
     fetchNextToGoRaces: PropTypes.func.isRequired
   }
 
+  constructor () {
+    super()
+
+    this.state = {
+      currentTime: new Date()
+    }
+
+    this.timer = null
+
+    this.getCurrentTime = this.getCurrentTime.bind(this)
+  }
+
   componentWillMount () {
     this.props.fetchNextToGoRaces()
   }
 
+  componentDidMount () {
+    this.getCurrentTime()
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.timer)
+  }
+
+  getCurrentTime () {
+    this.timer = setTimeout(this.getCurrentTime, 1000)
+
+    this.setState({
+      currentTime: new Date()
+    })
+  }
+
   render () {
     const {races} = this.props
+    const {currentTime} = this.state
+
+    if (!races) {
+      return <div>...Loading...</div>
+    }
+
+    const currentRaces = races.filter(race => moment(race.raceStartTime).isAfter(moment())).slice(0, 5)
+
     return (
-      <HomePage races={races} />
+      <HomePage races={currentRaces} currentTime={moment(currentTime)} />
     )
   }
 }

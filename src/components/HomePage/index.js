@@ -11,10 +11,6 @@ export default class HomePage extends PureComponent {
   render () {
     const {races} = this.props
 
-    if (!races) {
-      return <div>...Loading...</div>
-    }
-
     return (
       <div>
         <h1 className={css.header}>Welcome to the homepage</h1>

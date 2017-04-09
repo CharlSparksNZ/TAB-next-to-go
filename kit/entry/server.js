@@ -86,8 +86,7 @@ const PORT = process.env.PORT || 4000;
       const data = mockData
 
       data.races.forEach((race, index) => {
-        const {raceStartTime} = race
-        const now = moment(raceStartTime).add(index, 'minutes')
+        const now = moment().add(index, 'minutes')
 
         race.raceStartTime = now
       })

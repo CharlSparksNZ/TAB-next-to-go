@@ -71,7 +71,8 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
               ],
               plugins: [
                 'syntax-dynamic-import',
-                'transform-class-properties'
+                'transform-class-properties',
+                'transform-object-rest-spread'
               ]
             }
           }

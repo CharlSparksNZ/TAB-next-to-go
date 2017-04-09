@@ -1,12 +1,12 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import data from 'src/store/data'
+import races from 'src/store/data'
 
 export default function createNewStore () {
   const store = createStore(
     combineReducers({
-      data
+      races
     }),
     // Initial server state, provided by the server.  Only relevant in the
     // browser -- on the server, we'll start with a blank object

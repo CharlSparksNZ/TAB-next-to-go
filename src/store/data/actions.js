@@ -2,7 +2,8 @@ import tabApi from 'src/services/api'
 import moment from 'moment'
 
 import {
-  FETCH_TAB_NEXT_TO_GO_RACES
+  FETCH_TAB_NEXT_TO_GO_RACES,
+  SET_RACE_FILTER
 } from './types'
 
 function sortRaces (race, nextRace) {
@@ -21,8 +22,15 @@ export function fetchNextToGoRaces () {
 
       dispatch({
         type: FETCH_TAB_NEXT_TO_GO_RACES,
-        payload: data
+        payload: data.races
       })
     })
+  }
+}
+
+export function changeFilter (filter) {
+  return {
+    type: SET_RACE_FILTER,
+    payload: filter
   }
 }

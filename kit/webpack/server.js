@@ -111,7 +111,8 @@ export default new WebpackConfig().extend({
           ],
           plugins: [
             'syntax-dynamic-import',
-            'transform-class-properties'
+            'transform-class-properties',
+            'transform-object-rest-spread'
           ]
         }
       },

@@ -1,12 +1,12 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import tabData from 'src/store/tabData'
+import data from 'src/store/data'
 
 export default function createNewStore () {
   const store = createStore(
     combineReducers({
-      tabData
+      data
     }),
     // Initial server state, provided by the server.  Only relevant in the
     // browser -- on the server, we'll start with a blank object

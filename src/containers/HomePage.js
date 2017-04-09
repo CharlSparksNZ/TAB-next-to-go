@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 
 import HomePage from '../components/HomePage'
 
-import {fetchNextToGoRaces} from '../store/tabData/actions'
+import {fetchNextToGoRaces} from '../store/data/actions'
 
 class HomePageContainer extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ function mapDispatchToProps (dispatch) {
 
 function mapStateToProps (state) {
   return {
-    races: state.tabData.races
+    races: state.data.races
   }
 }
 

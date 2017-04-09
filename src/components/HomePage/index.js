@@ -1,6 +1,7 @@
 import React, {PropTypes, PureComponent} from 'react'
 
 import RaceCard from '../RaceCard'
+import css from './styles.scss'
 
 export default class HomePage extends PureComponent {
   static propTypes = {
@@ -9,10 +10,23 @@ export default class HomePage extends PureComponent {
 
   render () {
     const {races} = this.props
+
+    if (!races) {
+      return <div>...Loading...</div>
+    }
+
     return (
       <div>
-        <h1>Welcome to the homepage</h1>
-        {races.map(race => <RaceCard {...race} />)}
+        <h1 className={css.header}>Welcome to the homepage</h1>
+        <div className={css.container}>
+          {races.map(race => {
+            const {meeting, raceNumber, raceName} = race
+
+            return (
+              <RaceCard {...race} key={`${meeting.location}-${raceName}:${raceNumber}`} />
+            )
+          })}
+        </div>
       </div>
     )
   }

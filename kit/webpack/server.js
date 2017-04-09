@@ -110,7 +110,8 @@ export default new WebpackConfig().extend({
             'react'
           ],
           plugins: [
-            'syntax-dynamic-import'
+            'syntax-dynamic-import',
+            'transform-class-properties'
           ]
         }
       },

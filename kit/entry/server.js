@@ -36,6 +36,9 @@ import KoaRouter from 'koa-router'
 // Static file handler
 import koaStatic from 'koa-static'
 
+// Enable Cors for Koa routes
+import cors from 'koa-cors'
+
 // High-precision timing, so we can debug response time to serve a request
 import ms from 'microseconds'
 
@@ -51,6 +54,8 @@ import { StaticRouter } from 'react-router'
 // title, meta info, etc along with the initial HTML
 import Helmet from 'react-helmet'
 
+import moment from 'moment'
+
 // Custom redux store creator.  This will allow us to create a store 'outside'
 // of Apollo, so we can apply our own reducers and make use of the Redux dev
 // tools in the browser
@@ -61,6 +66,7 @@ import view from 'kit/views/ssr.ejs'
 
 // App entry point
 import App from 'src/app'
+import mockData from 'src/services/mockResponse.json'
 
 // Import paths.  We'll use this to figure out where our public folder is
 // so we can serve static files
@@ -76,9 +82,17 @@ const PORT = process.env.PORT || 4000;
 (async function server () {
   // Set up routes
   const router = (new KoaRouter())
-    // Set-up a general purpose /ping route to check the server is alive
-    .get('/ping', async ctx => {
-      ctx.body = 'pong'
+    .get('/api/races/next-to-go', async ctx => {
+      const data = mockData
+
+      data.races.forEach((race, index) => {
+        const {raceStartTime} = race
+        const now = moment(raceStartTime).add(index, 'minutes')
+
+        race.raceStartTime = now
+      })
+
+      ctx.body = data
     })
 
     // Everything else is React
@@ -119,6 +133,11 @@ const PORT = process.env.PORT || 4000;
 
     // Preliminary security for HTTP headers
     .use(koaHelmet())
+
+    // Setup cors options for server
+    .use(cors({
+      origin: 'http://localhost:8080'
+    }))
 
     // Error wrapper.  If an error manages to slip through the middleware
     // chain, it will be caught and logged back here

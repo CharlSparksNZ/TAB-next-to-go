@@ -1,6 +1,11 @@
 .card {
-  flex: 0 1 20%;
+  flex: 0 0 20%;
+  min-width: 200px;
   margin-bottom: 1em;
+  padding: 1em;
+}
+
+.cardContainer {
   padding: 1em;
   background-color: #fff;
   border: 1px solid #e5e5e5;

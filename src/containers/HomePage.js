@@ -5,6 +5,8 @@ import moment from 'moment'
 
 import HomePage from '../components/HomePage'
 
+import {filterRaces} from '../utils/filters'
+
 import {fetchNextToGoRaces, changeFilter} from '../store/data/actions'
 
 moment.updateLocale('en', {
@@ -28,7 +30,9 @@ moment.updateLocale('en', {
 class HomePageContainer extends Component {
   static propTypes = {
     races: PropTypes.array,
-    fetchNextToGoRaces: PropTypes.func.isRequired
+    filter: PropTypes.string,
+    fetchNextToGoRaces: PropTypes.func.isRequired,
+    changeFilter: PropTypes.func.isRequired
   }
 
   constructor () {
@@ -69,17 +73,22 @@ class HomePageContainer extends Component {
   }
 
   render () {
-    const {races} = this.props
+    const {races, filter} = this.props
     const {currentTime} = this.state
+    let currentRaces = filterRaces(races, filter)
 
     if (!races) {
       return <div>...Loading...</div>
     }
 
-    const currentRaces = races.filter(race => moment(race.raceStartTime).isAfter(moment())).slice(0, 5)
+    currentRaces = currentRaces.filter(race => moment(race.raceStartTime).isAfter(moment())).slice(0, 5)
 
     return (
-      <HomePage races={currentRaces} currentTime={moment(currentTime)} handleClick={this.handleClick} />
+      <HomePage
+        races={currentRaces}
+        currentFilter={filter}
+        currentTime={moment(currentTime)}
+        handleClick={this.handleClick} />
     )
   }
 }

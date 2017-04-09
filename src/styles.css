@@ -1,6 +1,7 @@
 /* Global block.  Anything we put in here will automatically get put in
 the global scope... i.e. it will bleed out to our overall app CSS */
 :global html {
+  box-sizing: border-box;
   padding: 0;
   border: 0;
   font-family: 'Roboto', sans-serif;
@@ -12,6 +13,16 @@ the global scope... i.e. it will bleed out to our overall app CSS */
   }
 }
 
+:global body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:global div {
+  box-sizing: border-box;
+}
+
 .app {
   background-color: #ededed;
+  padding: 1em;
 }

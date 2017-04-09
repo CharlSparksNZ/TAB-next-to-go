@@ -19,10 +19,12 @@ export default class RaceCard extends PureComponent {
 
     return (
       <div className={css.card}>
-        <h3 className={css.name}>{raceName}</h3>
-        <h4 className={css.countdown}>Closes {countdown}</h4>
-        <br />
-        <div>{meeting.location}</div>
+        <div className={css.cardContainer}>
+          <h3 className={css.name}>{raceName}</h3>
+          <h4 className={css.countdown}>Closes {countdown}</h4>
+          <br />
+          <div>{meeting.location}</div>
+        </div>
       </div>
     )
   }

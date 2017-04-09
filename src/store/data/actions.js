@@ -1,4 +1,4 @@
-import tabApi from 'src/services/api'
+import api from 'src/services/api'
 import moment from 'moment'
 
 import {
@@ -16,7 +16,7 @@ function sortRaces (race, nextRace) {
 
 export function fetchNextToGoRaces () {
   return dispatch => {
-    tabApi.fetchNextToGoRaces()
+    api.fetchNextToGoRaces()
     .then(data => {
       data.races.sort(sortRaces)
 

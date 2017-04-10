@@ -6,8 +6,6 @@ import css from './styles.scss'
 
 import * as raceTypes from 'src/constants/raceTypes'
 
-console.log(raceTypes)
-
 export default class HomePage extends PureComponent {
   static propTypes = {
     races: PropTypes.array,
@@ -20,7 +18,7 @@ export default class HomePage extends PureComponent {
 
     return (
       <div>
-        <h1 className={css.header}>Welcome to the homepage</h1>
+        <h1 className={css.header}>Next to go races</h1>
         <ul className={css.filters}>
           {Object.keys(raceTypes).map(filter => {
             const isActive = filter === currentFilter
